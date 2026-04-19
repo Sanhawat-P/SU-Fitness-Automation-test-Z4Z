@@ -1,0 +1,331 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: pongsatorn_test.spec.ts >> Pongsatorn automated test >> TCS-NEWS-024 เพิ่มข่าวด้วยข้อมูลที่ไม่ระบุข้อมูล
+- Location: tests\pongsatorn_test.spec.ts:128:9
+
+# Error details
+
+```
+Error: expect(locator).toContainText(expected) failed
+
+Locator: locator('div').filter({ hasText: /^หัวข้อข่าว$/ })
+Expected substring: "กรุณาระบุหัวข้อข่าว"
+Received string:    "หัวข้อข่าว"
+Timeout: 5000ms
+
+Call log:
+  - Expect "toContainText" with timeout 5000ms
+  - waiting for locator('div').filter({ hasText: /^หัวข้อข่าว$/ })
+    8 × locator resolved to <div class="mb-3">…</div>
+      - unexpected value "หัวข้อข่าว"
+
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e5]:
+        - link "Fitness Logo SU.ED FITNESS CENTER" [ref=e6] [cursor=pointer]:
+          - /url: /
+          - img "Fitness Logo" [ref=e7]
+          - generic [ref=e8]: SU.ED FITNESS CENTER
+        - generic [ref=e10]:
+          - link "หน้าแรก" [ref=e11] [cursor=pointer]:
+            - /url: /
+          - link "ตารางเวลา" [ref=e12] [cursor=pointer]:
+            - /url: /schedule
+          - link "ข่าวสาร" [ref=e13] [cursor=pointer]:
+            - /url: /news
+          - link "สมาชิก" [ref=e14] [cursor=pointer]:
+            - /url: /package
+          - generic [ref=e15]:
+            - button "สวัสดี, Admin1" [ref=e16] [cursor=pointer]
+            - text:       
+    - generic [ref=e21]:
+      - heading "📰 เพิ่มข่าวใหม่" [level=4] [ref=e22]
+      - paragraph [ref=e23]: ใช้สำหรับประกาศข่าวสารและกิจกรรมของฟิตเนส
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]: หัวข้อข่าว
+          - textbox "เช่น แจ้งปิดปรับปรุงฟิตเนส" [active] [ref=e27]
+        - generic [ref=e28]:
+          - generic [ref=e29]: รูปภาพประกอบ
+          - button "Choose File" [ref=e30] [cursor=pointer]
+        - generic [ref=e31]:
+          - generic [ref=e32]: เนื้อหาข่าว
+          - textbox "รายละเอียดข่าว..." [ref=e33]
+        - generic [ref=e34]:
+          - generic [ref=e36]:
+            - generic [ref=e37]: ประเภทข่าว
+            - combobox [ref=e38]:
+              - option "ทั่วไป" [selected]
+              - option "สุขภาพ"
+          - generic [ref=e40]:
+            - generic [ref=e41]: วันที่เผยแพร่
+            - textbox [ref=e42]
+        - generic [ref=e43]:
+          - button "ยกเลิก" [ref=e44] [cursor=pointer]
+          - button "บันทึกข่าว" [ref=e45] [cursor=pointer]
+    - contentinfo [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img "Logo" [ref=e50]
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - heading "คลับ" [level=6] [ref=e54]
+              - list [ref=e55]:
+                - listitem [ref=e56]:
+                  - button "ข่าวสาร" [ref=e57] [cursor=pointer]
+                - listitem [ref=e58]:
+                  - button "ตารางเวลา" [ref=e59] [cursor=pointer]
+                - listitem [ref=e60]:
+                  - button "สมาชิก" [ref=e61] [cursor=pointer]
+            - generic [ref=e62]:
+              - heading "ติดต่อเรา" [level=6] [ref=e63]
+              - list [ref=e64]:
+                - listitem [ref=e65]:
+                  - button "พูดคุยกับเรา" [ref=e66] [cursor=pointer]
+            - generic [ref=e67]:
+              - heading "ข้อมูลเพิ่มเติม" [level=6] [ref=e68]
+              - list [ref=e69]:
+                - listitem [ref=e70]:
+                  - button "กฎระเบียบข้อบังคับ" [ref=e71] [cursor=pointer]
+                - listitem [ref=e72]:
+                  - button "คำถามที่พบบ่อย" [ref=e73] [cursor=pointer]
+          - generic [ref=e74]:
+            - img "Logo 2" [ref=e75]
+            - generic [ref=e76]:
+              - button [ref=e77] [cursor=pointer]:
+                - img [ref=e78]
+              - button [ref=e80] [cursor=pointer]:
+                - img [ref=e81]
+              - button [ref=e83] [cursor=pointer]:
+                - img [ref=e84]
+              - button [ref=e86] [cursor=pointer]:
+                - img [ref=e87]
+        - separator [ref=e89]
+        - generic [ref=e91]:
+          - text: © 2025 SU.ED Fitness Center. สงวนลิขสิทธิ์ |
+          - link "Terms" [ref=e92] [cursor=pointer]:
+            - /url: /terms
+          - text: "|"
+          - link "Privacy" [ref=e93] [cursor=pointer]:
+            - /url: /privacy
+  - generic [ref=e94]: "6"
+```
+
+# Test source
+
+```ts
+  43  |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  44  |         await expect(page).toHaveURL('admin/news');
+  45  |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  46  |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  47  |         await editNewsPage.goto();
+  48  |         await expect(page).toHaveURL('/admin/news/create');
+  49  |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  50  |     });
+  51  | 
+  52  |     test('TCS-NEWS-020 เพิ่มข่าวด้วยข้อมูลที่ครบถ้วน', async ({page}) => {
+  53  |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  54  |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  55  |         await expect(page).toHaveURL('admin/news');
+  56  |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  57  |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  58  |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  59  |         await expect(page).toHaveURL('/admin/news/create');
+  60  |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  61  |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  62  |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  63  |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  64  |         await page.getByRole('combobox').selectOption('general');
+  65  |         await page.locator('input[type="date"]').fill('2026-04-03');  
+  66  |         page.once('dialog', async dialog => {
+  67  |             console.log(`Dialog message: ${dialog.message()}`);
+  68  |             await dialog.dismiss().catch(() => {}); 
+  69  |         });
+  70  |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  71  |         await expect(page).toHaveURL('/admin/news')
+  72  |     });
+  73  | 
+  74  |     test('TCS-NEWS-021 เพิ่มข่าวด้วยข้อมูลที่ไม่ใส่หัวข้อข่าว', async ({page}) => {
+  75  |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  76  |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  77  |         await expect(page).toHaveURL('admin/news');
+  78  |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  79  |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  80  |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  81  |         await expect(page).toHaveURL('/admin/news/create');
+  82  |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  83  |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('');
+  84  |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  85  |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  86  |         await page.getByRole('combobox').selectOption('general');
+  87  |         await page.locator('input[type="date"]').fill('2026-04-03');  
+  88  |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  89  |         await expect(page.locator('div').filter({ hasText: /^หัวข้อข่าว$/ })).toContainText('กรุณาระบุหัวข้อข่าว');
+  90  |     });
+  91  | 
+  92  |     test('TCS-NEWS-022 เพิ่มข่าวด้วยข้อมูลที่ไม่ใส่รูปภาพประกอบ', async ({page}) => {
+  93  |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  94  |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  95  |         await expect(page).toHaveURL('admin/news');
+  96  |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  97  |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  98  |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  99  |         await expect(page).toHaveURL('/admin/news/create');
+  100 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  101 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  102 |         // await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  103 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  104 |         await page.getByRole('combobox').selectOption('general');
+  105 |         await page.locator('input[type="date"]').fill('2026-04-03');  
+  106 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  107 |         await expect(page.locator('div').filter({ hasText: /^หัวข้อข่าว$/ })).toContainText('กรุณาระบุรูปภาพประกอบ');
+  108 |     });
+  109 | 
+  110 |     test('TCS-NEWS-023 เพิ่มข่าวด้วยข้อมูลที่ไม่ใส่เนื้อหาข่าว', async ({page}) => {
+  111 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  112 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  113 |         await expect(page).toHaveURL('admin/news');
+  114 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  115 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  116 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  117 |         await expect(page).toHaveURL('/admin/news/create');
+  118 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  119 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  120 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  121 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('');
+  122 |         await page.getByRole('combobox').selectOption('general');
+  123 |         await page.locator('input[type="date"]').fill('2026-04-03');  
+  124 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  125 |         await expect(page.locator('div').filter({ hasText: /^เนื้อหาข่าว$/ })).toContainText('กรุณาระบุเนื้อหาข่าว');
+  126 |     });
+  127 | 
+  128 |     test('TCS-NEWS-024 เพิ่มข่าวด้วยข้อมูลที่ไม่ระบุข้อมูล', async ({page}) => {
+  129 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  130 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  131 |         await expect(page).toHaveURL('admin/news');
+  132 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  133 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  134 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  135 |         await expect(page).toHaveURL('/admin/news/create');
+  136 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  137 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('');
+  138 |         // await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  139 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('');
+  140 |         await page.getByRole('combobox').selectOption('general');
+  141 |         await page.locator('input[type="date"]').fill('');
+  142 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+> 143 |         await expect(page.locator('div').filter({ hasText: /^หัวข้อข่าว$/ })).toContainText('กรุณาระบุหัวข้อข่าว');
+      |                                                                               ^ Error: expect(locator).toContainText(expected) failed
+  144 |     });
+  145 | 
+  146 |     test('TCS-NEWS-025 เพิ่มข่าวด้วยข้อมูล White Space', async ({page}) => {
+  147 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  148 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  149 |         await expect(page).toHaveURL('admin/news');
+  150 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  151 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  152 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  153 |         await expect(page).toHaveURL('/admin/news/create');
+  154 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  155 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill(' ');
+  156 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  157 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill(' ');
+  158 |         await page.getByRole('combobox').selectOption('general');
+  159 |         await page.locator('input[type="date"]').fill('2026-04-03');
+  160 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  161 |         await expect(page.locator('div').filter({ hasText: /^หัวข้อข่าว$/ })).toContainText('กรุณาระบุหัวข้อข่าว');
+  162 |     });
+  163 | 
+  164 |     test('TCS-NEWS-026 เพิ่มข่าวด้วยข้อมูลที่ไม่ระบุข้อมูล', async ({page}) => {
+  165 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  166 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  167 |         await expect(page).toHaveURL('admin/news');
+  168 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  169 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  170 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  171 |         await expect(page).toHaveURL('/admin/news/create');
+  172 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  173 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  174 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  175 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  176 |         await page.getByRole('combobox').selectOption('general');
+  177 |         await page.locator('input[type="date"]').fill('');
+  178 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  179 |         await expect(page.locator('div').filter({ hasText: /^หัวข้อข่าว$/ })).toContainText('กรุณาระบุวันที่เผยแพร่');
+  180 |     });
+  181 | 
+  182 |     test('TCS-NEWS-027 การเพิ่มข่าวด้วยรูปภาพนามสกุล .txt', async ({page}) => {
+  183 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  184 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  185 |         await expect(page).toHaveURL('admin/news');
+  186 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  187 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  188 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  189 |         await expect(page).toHaveURL('/admin/news/create');
+  190 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  191 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  192 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.txt');
+  193 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  194 |         await page.getByRole('combobox').selectOption('general');
+  195 |         await page.locator('input[type="date"]').fill('2026-04-03');
+  196 |         await page.getByRole('button', { name: 'บันทึกข่าว' }).click();
+  197 |         await expect(page.locator('div').filter({ hasText: /^รูปภาพประกอบ$/ })).toContainText('รองรับเฉพาะไฟล์ .jpg / .png เท่านั้น');
+  198 |     });
+  199 | 
+  200 |     test('TCS-NEWS-028 การเพิ่มข่าวแล้วกดยกเลิก', async ({page}) => {
+  201 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  202 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  203 |         await expect(page).toHaveURL('admin/news');
+  204 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  205 |         await expect(page.getByRole('button', { name: 'เพิ่มข่าว' })).toBeVisible();
+  206 |         await page.getByRole('button', { name: 'เพิ่มข่าว' }).click();
+  207 |         await expect(page).toHaveURL('/admin/news/create');
+  208 |         await expect(page.getByRole('heading', { name: '📰 เพิ่มข่าวใหม่' })).toBeVisible();
+  209 |         await page.getByRole('textbox', { name: 'เช่น แจ้งปิดปรับปรุงฟิตเนส' }).fill('Test Title');
+  210 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  211 |         await page.getByRole('textbox', { name: 'รายละเอียดข่าว' }).fill('Test News');
+  212 |         await page.getByRole('combobox').selectOption('general');
+  213 |         await page.locator('input[type="date"]').fill('2026-04-03');
+  214 |         await page.getByRole('button', { name: 'ยกเลิก' }).click();
+  215 |         await expect(page).toHaveURL('admin/news');
+  216 |     });
+  217 | 
+  218 |     test('TCS-NEWS-029 การแก้ไขข่าวด้วยข้อมูลที่ถูกต้อง', async ({page}) => {
+  219 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  220 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  221 |         await expect(page).toHaveURL('admin/news');
+  222 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  223 |         await expect(page.getByRole('button', { name: 'แก้ไข' }).first()).toBeVisible();
+  224 |         await page.getByRole('button', { name: 'แก้ไข' }).first().click();
+  225 |         await expect(page).toHaveURL('/admin/news/edit/31');
+  226 |         await expect(page.getByText('แก้ไขข่าว')).toBeVisible();
+  227 |         await page.getByRole('textbox').first().fill('Test Title2');
+  228 |         await page.locator('input[type="file"]').setInputFiles('picture_tests/TestImage.jpg');
+  229 |         await page.getByText('Test News').fill('');
+  230 |         await page.getByRole('combobox').selectOption('general');
+  231 |         await page.locator('input[type="date"]').fill('2026-04-03');
+  232 |         await page.getByRole('button', { name: 'บันทึก' }).click();
+  233 |         await expect(page.getByText('ยืนยันการแก้ไข')).toBeVisible();
+  234 |         await page.getByRole('button', { name: 'ยืนยัน' }).click();
+  235 |         await expect(page).toHaveURL('/admin/news');
+  236 |     });
+  237 | 
+  238 |      test('TCS-NEWS-030 แก้ไขข่าวด้วยข้อมูลที่เว้นว่าง', async ({page}) => {
+  239 |         await page.getByRole('button', { name: 'สวัสดี, Admin1' }).click();
+  240 |         await page.getByRole('link', { name: ' จัดการข่าวสาร' }).click();
+  241 |         await expect(page).toHaveURL('admin/news');
+  242 |         await expect(page.getByRole('heading', { name: 'จัดการข่าวสาร' })).toBeVisible();
+  243 |         await expect(page.getByRole('button', { name: 'แก้ไข' }).first()).toBeVisible();
+```
